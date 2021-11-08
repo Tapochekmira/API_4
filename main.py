@@ -39,7 +39,7 @@ def fetch_nasa_APOD(directory, numbers_of_pictures, nasa_token):
     nasa_url = 'https://api.nasa.gov/planetary/apod'
     payload = {
     'api_key': nasa_token,
-    'count': 30,
+    'count': numbers_of_pictures,
     'thumbs': False
     }
     nasa_response = requests.get(nasa_url, params=payload)
@@ -70,11 +70,14 @@ def fetch_nasa_EPIC(directory, nasa_token):
         download_picture(directory, f'EPIC{number}.png', picture_earth_url, nasa_token)
 
 
-def publish_text_to_telegram(telegram_token):
-    bot = telegram.Bot(token=telegram_token)
-    bot.send_message(chat_id='@Kosmo_Super_Kek', text="I'm sorry Dave I'm afraid I can't do that.")
+def publish_text_to_telegram(telegram_token, directory):
+    all_pictures = os.listdir(directory)
     
-
+    
+    chat_id='@Kosmo_Super_Kek'
+    bot = telegram.Bot(token=telegram_token)
+    bot.send_document(chat_id=chat_id, document=open(f'{directory}{all_pictures[0]}', 'rb'))
+    
     
 if __name__ == '__main__':
     load_dotenv()
@@ -91,4 +94,4 @@ if __name__ == '__main__':
 #    fetch_nasa_APOD(directory, numbers_of_pictures, nasa_token)
 #    fetch_nasa_EPIC(directory, nasa_token) 
 
-    publish_text_to_telegram(telegram_token)
+    publish_text_to_telegram(telegram_token, directory)
