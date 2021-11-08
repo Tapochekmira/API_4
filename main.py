@@ -1,6 +1,7 @@
 import requests
 import os
 import datetime
+import telegram
 from pathlib import Path
 from urllib.parse import urlparse
 from dotenv import load_dotenv
@@ -34,7 +35,7 @@ def fetch_spacex_last_launch(directory):
         download_picture(directory, f'spacex{file_name}.jpeg', picture_url)
 
 
-def fetch_nasa_APOD(directory, numbers_of_pictures):
+def fetch_nasa_APOD(directory, numbers_of_pictures, nasa_token):
     nasa_url = 'https://api.nasa.gov/planetary/apod'
     payload = {
     'api_key': nasa_token,
@@ -49,7 +50,7 @@ def fetch_nasa_APOD(directory, numbers_of_pictures):
                          nasa_picture_url)
 
 
-def fetch_nasa_EPIC(directory):
+def fetch_nasa_EPIC(directory, nasa_token):
     nasa_earth_url = 'https://api.nasa.gov/EPIC/api/natural/images'
     payload = {
         'api_key': nasa_token
@@ -69,16 +70,25 @@ def fetch_nasa_EPIC(directory):
         download_picture(directory, f'EPIC{number}.png', picture_earth_url, nasa_token)
 
 
+def publish_text_to_telegram(telegram_token):
+    bot = telegram.Bot(token=telegram_token)
+    bot.send_message(chat_id='@Kosmo_Super_Kek', text="I'm sorry Dave I'm afraid I can't do that.")
+    
+
+    
 if __name__ == '__main__':
     load_dotenv()
     nasa_token = os.environ['NASA_TOKEN']
-    
+    telegram_token = os.environ['TELEGRAM_TOKEN']
+
     directory = 'images/'
     numbers_of_pictures = 30
     wiki_url = "https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg"
     
     
-    download_picture(directory, 'huble.jpeg', wiki_url)
-    fetch_spacex_last_launch(directory)
-    fetch_nasa_APOD(directory, numbers_of_pictures)
-    fetch_nasa_EPIC(directory) 
+#    download_picture(directory, 'huble.jpeg', wiki_url)
+#    fetch_spacex_last_launch(directory)
+#    fetch_nasa_APOD(directory, numbers_of_pictures, nasa_token)
+#    fetch_nasa_EPIC(directory, nasa_token) 
+
+    publish_text_to_telegram(telegram_token)
