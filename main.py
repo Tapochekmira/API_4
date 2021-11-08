@@ -72,7 +72,7 @@ def fetch_nasa_EPIC(directory, nasa_token):
         download_picture(directory, f'EPIC{picture_number}.png', picture_earth_url, nasa_token)
 
 
-def publish_text_to_telegram(telegram_token, directory, picture):
+def publish_text_to_telegram(telegram_token, directory, picture, chat_id):
     chat_id='@Kosmo_Super_Kek'
     bot = telegram.Bot(token=telegram_token)
     bot.send_document(chat_id=chat_id, document=open(f'{directory}{picture}', 'rb'))
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     nasa_token = os.environ['NASA_TOKEN']
     telegram_token = os.environ['TELEGRAM_TOKEN']
     sleep_time = os.environ['SLEEP_TIME']
-    
+    chat_id = os.environ['CHAT_ID']
     directory = 'images/'
     numbers_of_pictures = 30
     wiki_url = "https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg"
@@ -96,5 +96,5 @@ if __name__ == '__main__':
     all_pictures = os.listdir(directory)
     
     for picture in all_pictures:
-        publish_text_to_telegram(telegram_token, directory, picture)
+        publish_text_to_telegram(telegram_token, directory, picture, chat_id)
         time.sleep(int(sleep_time))
