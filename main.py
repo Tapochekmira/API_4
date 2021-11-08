@@ -3,11 +3,8 @@ import os
 import datetime
 from pathlib import Path
 from urllib.parse import urlparse
-directory = 'images/'
-numbers_of_pictures = 30
-spasex_url = 'https://api.spacexdata.com/v3/launches/101/'
-wiki_url = "https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg"
-nasa_token = os.environ['NASA_TOKEN']
+from dotenv import load_dotenv
+
 
 
 def get_file_extension(picture_url):
@@ -28,12 +25,13 @@ def download_picture(directory, picture_name, url, api_key=None):
         file.write(response.content)
 
 
-def fetch_spacex_last_launch(spasex_url, directory):    
+def fetch_spacex_last_launch(directory):
+    spasex_url = 'https://api.spacexdata.com/v3/launches/101/'
     spasex_response = requests.get(spasex_url)
     spasex_response.raise_for_status()
     spacex_pictures = spasex_response.json()['links']['flickr_images']
     for file_name, picture_url in enumerate(spacex_pictures):
-        download_picture(directory, f'spacex{file_name}.jpeg',                             picture_url)
+        download_picture(directory, f'spacex{file_name}.jpeg', picture_url)
 
 
 def fetch_nasa_APOD(directory, numbers_of_pictures):
@@ -47,7 +45,8 @@ def fetch_nasa_APOD(directory, numbers_of_pictures):
     nasa_response.raise_for_status()
     for picture_number in range(numbers_of_pictures):
         nasa_picture_url = nasa_response.json()[picture_number]['url']
-        download_picture(directory, f'nasa{picture_number}{get_file_extension(nasa_picture_url)}', nasa_picture_url)
+        download_picture(directory, f'nasa{picture_number}{get_file_extension(nasa_picture_url)}',
+                         nasa_picture_url)
 
 
 def fetch_nasa_EPIC(directory):
@@ -70,7 +69,16 @@ def fetch_nasa_EPIC(directory):
         download_picture(directory, f'EPIC{number}.png', picture_earth_url, nasa_token)
 
 
-download_picture(directory, 'huble.jpeg', wiki_url)
-fetch_spacex_last_launch(spasex_url, directory)
-fetch_nasa_APOD(directory, numbers_of_pictures)
-fetch_nasa_EPIC(directory) 
+if __name__ == '__main__':
+    load_dotenv()
+    nasa_token = os.environ['NASA_TOKEN']
+    
+    directory = 'images/'
+    numbers_of_pictures = 30
+    wiki_url = "https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg"
+    
+    
+    download_picture(directory, 'huble.jpeg', wiki_url)
+    fetch_spacex_last_launch(directory)
+    fetch_nasa_APOD(directory, numbers_of_pictures)
+    fetch_nasa_EPIC(directory) 
