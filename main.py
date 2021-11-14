@@ -27,7 +27,7 @@ def download_picture(directory, picture_name, url, api_key=None):
         file.write(response.content)
 
 
-def fetch_spacex_last_launch(directory):
+def fetch_spacex_101_launch(directory):
     spasex_url = 'https://api.spacexdata.com/v3/launches/101/'
     spasex_response = requests.get(spasex_url)
     spasex_response.raise_for_status()
