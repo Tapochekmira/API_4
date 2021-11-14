@@ -75,9 +75,10 @@ def fetch_nasa_EPIC(directory, nasa_token):
 def publish_text_to_telegram(telegram_token, directory, picture, chat_id):
     chat_id='@Kosmo_Super_Kek'
     bot = telegram.Bot(token=telegram_token)
-    bot.send_document(chat_id=chat_id, document=open(f'{directory}{picture}', 'rb'))
-    
-    
+    with open(f'{directory}{picture}', 'rb') as picture:
+        bot.send_document(chat_id=chat_id, document=picture)
+
+
 if __name__ == '__main__':
     load_dotenv()
     nasa_token = os.environ['NASA_TOKEN']
