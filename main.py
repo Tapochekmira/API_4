@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 def get_file_extension(picture_url):
     picture_path = urlparse(picture_url).path
-    picture_tail = os.path.split(picture_path)[1] 
+    picture_tail = os.path.basename(picture_path)
     picture_ext = os.path.splitext(picture_tail)[1]
     return picture_ext
 
