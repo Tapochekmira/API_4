@@ -2,6 +2,7 @@ import os
 import telegram
 import fetch_nasa
 import fetch_spacex
+import time
 from pathlib import Path
 from dotenv import load_dotenv
 
