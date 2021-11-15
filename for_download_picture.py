@@ -1,5 +1,5 @@
 import requests
-from pathlib import Path
+
 
 def download_picture(directory, picture_name, url, api_key=None):
     payload = {
