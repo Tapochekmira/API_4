@@ -2,7 +2,7 @@ import os
 import telegram
 import fetch_nasa
 import fetch_spacex
-
+from pathlib import Path
 from dotenv import load_dotenv
 
 
@@ -23,6 +23,7 @@ if __name__ == '__main__':
     directory = 'images/'
     numbers_of_pictures = 30
     
+    Path(directory).mkdir(parents=True, exist_ok=True)
     fetch_spacex.fetch_spacex_101_launch(directory)
     fetch_nasa.fetch_nasa_APOD(directory, numbers_of_pictures, nasa_token)
     fetch_nasa.fetch_nasa_EPIC(directory, nasa_token)
