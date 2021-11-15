@@ -7,6 +7,5 @@ def download_picture(directory, picture_name, url, api_key=None):
         }
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    Path(directory).mkdir(parents=True, exist_ok=True)
     with open(f'{directory}{picture_name}', 'wb') as file:
         file.write(response.content)
